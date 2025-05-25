@@ -19,54 +19,55 @@ def pergunta_carro(prompt):
         return response.text
 
     except Exception as e:
-        print(f"❌ Erro ao gerar conteúdo com Gemini: {e}")
+        print(f"Erro ao gerar conteúdo com Gemini: {e}")
         return None
 
 
-def gerar_carros(marca="", ano="", combustivel=""):
+def gerar_carros_em_lotes(marca, ano, combustivel, total=100, lote=20):
+    carros = []
 
-    prompt = f"""
-    Aja como um especialista em veículos.
+    for i in range(0, total, lote):
+        prompt = f"""
+                Aja como um especialista em veículos.
 
-    Gere uma lista com 100 carros fictícios com as informações abaixo, possivel considerar marca: {marca}, ano: {ano} e combustivel: {combustivel} informado.
-    Caso não tenha informações, gere informações fictícias apenas com a considerar marca: {marca}. 
-    Retorne **apenas o JSON puro**, sem nenhum texto adicional, markdown ou crases.
+                Gere uma lista com {lote} carros fictícios com as informações abaixo. Considere as informações fornecidas, se disponíveis:
+                - Marca: {marca}
+                - Ano: {ano}
+                - Combustível: {combustivel}
 
-    Formato do JSON esperado:
-    {{
-    "carros": [
-        {{
-        "marca": "string",
-        "modelo": "string",
-        "ano": "int",
-        "motorizacao": "string",
-        "combustivel": "string",
-        "cor": "string",
-        "quilometragem": "float",
-        "portas": "integer",
-        "transmissao": "string",
-        "preco": "float"
-        }}
-    ]
-    }}
-    """
+                Se alguma informação não for fornecida, gere valores fictícios baseando-se apenas na marca (se informada).
 
-    json_data = pergunta_carro(prompt)
+                Retorne **apenas o JSON puro**, com aspas **duplas**, e **sem markdown ou caracteres escapados** (\\n, \\t, \\r).
 
-    if not json_data:
-        return []
+                Formato esperado:
 
-    try:
-        json_data_limpo = limpar_json(json_data)
-        carros_dict = json.loads(json_data_limpo)
-    except json.JSONDecodeError:
-        print("Erro ao decodificar o JSON:", json_data)
-        return []
+                {{
+                "carros": [
+                    {{
+                        "marca": "string",
+                        "modelo": "string",
+                        "ano": "int",
+                        "motorizacao": "string",
+                        "combustivel": "string",
+                        "cor": "string",
+                        "quilometragem": "float",
+                        "portas": "integer",
+                        "transmissao": "string",
+                        "preco": "float"
+                    }}
+                ]
+                }}
+                """
 
-    if not isinstance(carros_dict, dict) or "carros" not in carros_dict:
-        print("O JSON não está no formato esperado:", carros_dict)
-        return []
+        # Aqui você chamaria a API do ChatGPT ou outro modelo com o prompt acima
+        resposta = pergunta_carro(prompt)
 
-    carros = carros_dict["carros"]
-    
-    return carros
+        try:
+            json_carro = limpar_json(resposta)
+            dados = json.loads(json_carro)
+            carros.extend(dados.get("carros", []))
+        except json.JSONDecodeError as e:
+            print(f"Erro ao processar lote {i}: {e}")
+            continue
+
+    return {"carros": carros}

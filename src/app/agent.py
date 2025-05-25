@@ -1,6 +1,8 @@
 import os
+import subprocess
 import sys
 import json
+import time
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 from src.app.data_generator import pergunta_carro
 from src.client.client import MCPClient
@@ -19,6 +21,7 @@ def conversar():
         if not validado:
             return
 
+    print("\n🚗 Pesquisando aguarde um momento ...")
     resultados = cliente.enviar_requisicao(json.dumps(filtros))
 
     print("\n🚗 Resultados Encontrados:")
@@ -60,6 +63,9 @@ def validar_combustivel(filtros):
     
 
 if __name__ == "__main__":
+    # Inicia o servidor em background
+    process = subprocess.Popen(["python", "src/server/server.py"])
+    time.sleep(3)
     while True:
         try:
             conversar()
@@ -68,4 +74,8 @@ if __name__ == "__main__":
         finally:
             continuar = input("Deseja fazer outra busca? (s/n): ")
             if continuar.lower() != 's':
+                print("Encerrando monitor.")
+                # Mata o processo
+                process.terminate() 
                 break
+

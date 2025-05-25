@@ -12,12 +12,18 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.listen()
     print("Servidor MCP aguardando conexões...")
 
-    conn, addr = s.accept()
-    with conn:
-        print(f"Conectado por {addr}")
-        while True:
-            data = conn.recv(4096)
-            if not data:
-                break
-            resposta = processar_mcp(data.decode())
-            conn.sendall(resposta.encode())
+    while True:
+        conn, addr = s.accept()
+        with conn:
+            print(f"Conectado por {addr}")
+            try:
+                while True:
+                    data = conn.recv(16384)
+                    if not data:
+                        break
+                    resposta = processar_mcp(data.decode())
+                    conn.sendall(resposta.encode())
+            except ConnectionResetError:
+                print(f"Conexão resetada pelo cliente: {addr}")
+            except Exception as e:
+                print(f"Erro inesperado: {e}")

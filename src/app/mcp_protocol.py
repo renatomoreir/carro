@@ -1,6 +1,6 @@
 import json
 
-from src.app.data_generator import gerar_carros
+from src.app.data_generator import gerar_carros_em_lotes
 from src.app.database import SQLAlchemy
 from src.app.database import Carro
 
@@ -10,19 +10,23 @@ def processar_mcp(msg_json):
     
     while True:
         query = sqlalchemy.session().query(Carro)
-        if 'marca' in filtros:
+        if 'marca' in filtros and filtros['marca'] != "":
             query = query.filter(Carro.marca.ilike(f"%{filtros['marca']}%"))
-        if 'ano' in filtros:
+
+        if 'ano' in filtros and filtros['ano'] != 0:
             query = query.filter(Carro.ano == filtros['ano'])
-        if 'combustivel' in filtros:
+
+        if 'combustivel' in filtros and filtros['combustivel'] != "":
             query = query.filter(Carro.combustivel.ilike(f"%{filtros['combustivel']}%"))
 
-        carros = query.all()
+        carros = query.limit(100).all()
         if carros:
             break
 
-        carros = gerar_carros(filtros.get('marca'), filtros.get('ano'), filtros.get('combustivel'))
-        sqlalchemy.inserir_carros(carros)
+        print("\nGerando lotes de carros:")
+        carros = gerar_carros_em_lotes(filtros.get('marca'), filtros.get('ano'), filtros.get('combustivel'))
+        print("\nSalvando lotes de carros:")
+        sqlalchemy.inserir_carros(carros.get("carros", []))
         if not carros:
             return json.dumps([])
 

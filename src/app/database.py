@@ -60,7 +60,7 @@ class SQLAlchemy:
 
             if not exists:
                 cursor.execute(f'CREATE DATABASE "{self.db_name}"')
-                print(f"✅ Banco '{self.db_name}' criado.")
+                print(f"Banco '{self.db_name}' criado.")
 
             cursor.close()
             conn.close()

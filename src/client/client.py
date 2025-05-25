@@ -15,5 +15,5 @@ class MCPClient:
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             s.connect((self.host, self.port))
             s.sendall(mensagem.encode())
-            resposta = s.recv(8192)
+            resposta = s.recv(16384)
         return json.loads(resposta.decode())
