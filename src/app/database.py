@@ -6,7 +6,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy.exc import SQLAlchemyError
 from dotenv import load_dotenv
-load_dotenv(dotenv_path="/mnt/dados/gitlab/carro/src/.env")
+load_dotenv()
 
 Base = declarative_base()
 

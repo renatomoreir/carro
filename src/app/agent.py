@@ -1,8 +1,6 @@
 import os
-import subprocess
 import sys
 import json
-import time
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 from src.app.data_generator import pergunta_carro
 from src.client.client import MCPClient
