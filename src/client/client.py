@@ -2,7 +2,7 @@ import os
 import json
 import socket
 from dotenv import load_dotenv
-load_dotenv(dotenv_path="/mnt/dados/gitlab/carro/src/.env")
+load_dotenv()
 
 
 class MCPClient:

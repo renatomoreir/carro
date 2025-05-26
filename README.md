@@ -26,19 +26,19 @@ git clone https://github.com/renatomoreir/carro.git
 ```bash WINDOWS
 
 abrir o termina Win+R >> powershell
-cd  .\carro\
+cd .\carro\
 
 docker compose up -d
 docker ps -a
 
-export DATABASE_URL="postgresql://postgres:root@localhost:5432/postgres"
-psql "$DATABASE_URL"
-exit
-
 python -m venv venv
 .\venv\Scripts\activate
 pip install -r .\requirements.txt  
-python src/app/agent.py && python src/server/server.py 
+python.exe -m pip install --upgrade pip
+pip install --upgrade google-genai
+
+.\executar.bat
+
 
 ```
 

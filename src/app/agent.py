@@ -64,8 +64,6 @@ def validar_combustivel(filtros):
 
 if __name__ == "__main__":
     # Inicia o servidor em background
-    process = subprocess.Popen(["python", "src/server/server.py"])
-    time.sleep(3)
     while True:
         try:
             conversar()
@@ -75,7 +73,5 @@ if __name__ == "__main__":
             continuar = input("Deseja fazer outra busca? (s/n): ")
             if continuar.lower() != 's':
                 print("Encerrando monitor.")
-                # Mata o processo
-                process.terminate() 
                 break
 
