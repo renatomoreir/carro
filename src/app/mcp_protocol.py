@@ -23,9 +23,9 @@ def processar_mcp(msg_json):
         if carros:
             break
 
-        print("\nGerando lotes de carros:")
+        print("\nGerando lotes de carros ...")
         carros = gerar_carros_em_lotes(filtros.get('marca'), filtros.get('ano'), filtros.get('combustivel'))
-        print("\nSalvando lotes de carros:")
+        print("\nSalvando lotes de carros ...")
         sqlalchemy.inserir_carros(carros.get("carros", []))
         if not carros:
             return json.dumps([])
