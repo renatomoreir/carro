@@ -1,7 +1,3 @@
-# Desafio Técnico – Vaga de Desenvolvedor Python | C2S
-
-```Avaliar sua capacidade de aprender coisas novas, com foco em tecnologias que talvez você ainda não tenha usado, e também seu domínio de Python```
-
 ## Passos para Execução Local
 
 ### Baixar o Docker Desktop
